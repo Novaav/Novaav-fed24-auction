@@ -1,7 +1,8 @@
 import express from "express";
 import { createServer } from "node:http";
-import { Server } from "socket.io";
+import { DefaultEventsMap, Server, Socket } from "socket.io";
 import cors from "cors";
+import { auctionSocket } from "./sockets/auctionSocket.mjs";
 
 const app = express();
 const port = 3000;
@@ -14,8 +15,8 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  res.send("Auktion");
+app.get("/ping", (_, res) => {
+  res.status(200).send("Api is working");
 });
 
 const server = createServer(app);
@@ -24,6 +25,10 @@ const io = new Server(server, {
     credentials: true,
     origin: true,
   },
+});
+
+io.on("connection", async (socket) => {
+  auctionSocket(socket, io);
 });
 
 server.listen(port, () => {
