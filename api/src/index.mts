@@ -1,6 +1,6 @@
 import express from "express";
 import { createServer } from "node:http";
-import { DefaultEventsMap, Server, Socket } from "socket.io";
+import { Server } from "socket.io";
 import cors from "cors";
 import { auctionSocket } from "./sockets/auctionSocket.mjs";
 
