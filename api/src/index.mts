@@ -46,7 +46,7 @@ server.listen(port, async () => {
       throw new Error("Missing environment variable DB_URL");
     }
     await mongoose.connect(`${DB}`);
-    console.log("Connected to the database");
+    console.log("Api is up and running, connected to the database");
 
   } catch (error) {
     console.error("Error connecting to the database", error);
