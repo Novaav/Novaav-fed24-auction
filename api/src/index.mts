@@ -4,9 +4,13 @@ import { Server } from "socket.io";
 import cors from "cors";
 import { auctionSocket } from "./sockets/auctionSocket.mjs";
 import { auth } from "./middlewares/auth.mts";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const port = 3000;
+const DB = process.env.DB_URL || "mongodb://localhost:27017/auctionDB";
 
 app.use(express.json());
 app.use(
@@ -34,6 +38,18 @@ io.on("connection", async (socket) => {
   auctionSocket(socket, io);
 });
 
-server.listen(port, () => {
+server.listen(port, async () => {
   console.log(`Servern kör på http://localhost:${port}`);
+
+  try {
+    if (!DB) {
+      throw new Error("Missing environment variable DB_URL");
+    }
+    await mongoose.connect(`${DB}`);
+    console.log("Connected to the database");
+
+  } catch (error) {
+    console.error("Error connecting to the database", error);
+  };
 });
+
