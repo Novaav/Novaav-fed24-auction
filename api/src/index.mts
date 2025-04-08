@@ -6,6 +6,7 @@ import { auctionSocket } from "./sockets/auctionSocket.mjs";
 import cookieParser from "cookie-parser";
 import { logInRouter } from "./routes/loginroute.mts";
 
+
 const app = express();
 const port = 3000;
 
