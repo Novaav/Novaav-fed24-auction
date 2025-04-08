@@ -3,6 +3,8 @@ import { createServer } from "node:http";
 import { Server } from "socket.io";
 import cors from "cors";
 import { auctionSocket } from "./sockets/auctionSocket.mjs";
+import cookieParser from "cookie-parser";
+import { logInRouter } from "./routes/loginroute.mts";
 import { auth } from "./middlewares/auth.mts";
 
 const app = express();
@@ -15,6 +17,9 @@ app.use(
     origin: true,
   })
 );
+app.use(cookieParser());
+
+app.use("/login", logInRouter);
 
 app.get("/ping", (_, res) => {
   res.status(200).send("Api is working");
