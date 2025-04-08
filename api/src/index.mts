@@ -23,12 +23,11 @@ app.use(
 );
 app.use(cookieParser());
 
-app.use("/login", logInRouter);
-
 app.get("/ping", (_, res) => {
   res.status(200).send("Api is working");
 });
 
+app.use("/login", logInRouter);
 app.use(auth);
 
 const server = createServer(app);
@@ -52,9 +51,7 @@ server.listen(port, async () => {
     }
     await mongoose.connect(`${DB}`);
     console.log("Api is up and running, connected to the database");
-
   } catch (error) {
     console.error("Error connecting to the database", error);
-  };
+  }
 });
-
