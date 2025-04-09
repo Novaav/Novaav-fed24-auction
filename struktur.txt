@@ -1,0 +1,41 @@
+.
+├── api
+│   ├── package-lock.json
+│   ├── package.json
+│   └── src
+│       ├── controllers
+│       │   ├── logincontroller.mts
+│       │   └── registercontroller.mts
+│       ├── index.mts
+│       ├── middlewares
+│       │   └── auth.mts
+│       ├── models
+│       │   ├── auctionSchema.mts
+│       │   └── userSchema.mts
+│       ├── routes
+│       │   ├── loginroute.mts
+│       │   └── registerroute.mts
+│       └── sockets
+│           └── auctionSocket.mts
+├── frontend
+│   ├── index.html
+│   ├── login.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   └── vite.svg
+│   ├── register.html
+│   ├── src
+│   │   ├── login.ts
+│   │   ├── main.ts
+│   │   ├── register.ts
+│   │   ├── style.css
+│   │   ├── typescript.svg
+│   │   └── vite-env.d.ts
+│   └── tsconfig.json
+├── package-lock.json
+├── package.json
+├── README.md
+└── struktur.txt
+
+11 directories, 28 files

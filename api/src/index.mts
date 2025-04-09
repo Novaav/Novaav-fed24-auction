@@ -8,6 +8,8 @@ import { logInRouter } from "./routes/loginroute.mts";
 import { auth } from "./middlewares/auth.mts";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import registerRouter from "./routes/registerroute.mts";
+
 dotenv.config();
 
 const app = express();
@@ -27,9 +29,14 @@ app.get("/ping", (_, res) => {
   res.status(200).send("Api is working");
 });
 
+// Rutter för login och register
 app.use("/login", logInRouter);
-app.use(auth);
+app.use("/register", registerRouter); // Ingen auth här, så att registrering fungerar utan autentisering
 
+// Använd auth-middleware för rutter som kräver autentisering (t.ex. efter login)
+app.use(auth); // Auth-middleware ska appliceras efter login/register-rutter
+
+// Starta servern och anslut till databasen
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
