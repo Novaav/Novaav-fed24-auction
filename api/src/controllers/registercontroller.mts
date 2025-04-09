@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/userSchema.mts";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
@@ -13,7 +13,9 @@ export const registerUser = async (req: Request, res: Response) => {
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
 
     if (existingUser)
-      return res.status(409).json({ message: "User with this username or email already exists" });
+      return res
+        .status(409)
+        .json({ message: "User with this username or email already exists" });
 
     // Hasha lösenordet innan det sparas i databasen
     const hashedPassword = await bcrypt.hash(password, 10);
