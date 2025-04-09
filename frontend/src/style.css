@@ -98,13 +98,13 @@ button:focus-visible {
 
 .auction-container {
   display: flex;
-  gap: 20px;
+  gap: 10px;
 }
 
 .auction-create {
   flex: 1;
   background: #ffffff;
-  padding: 20px;
+  padding: 10px;
   border-radius: 8px;
 }
 
