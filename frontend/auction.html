@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <div id="app">
       <div id="app">
         <h1>Auktioner</h1>
         <div class="auction-container">
@@ -39,6 +38,22 @@
       </div>
           </div>
         </div>
+        <div id="auctionModal" class="modal" >
+          <div class="modal-content">
+            <h2 id="modalTitle">Auktionstitel</h2>
+            <p id="modalDescription">Beskrivning</p>
+            <p id="modalCurrentBid">Nuvarande bud: 0kr</p>
+            <p id="modalEndTime">Slutar: </p>
+            <input
+              type="number"
+              id="bidAmount"
+              placeholder="Lägg ditt bud"
+              required
+            />
+            <button id="placeBidButton">Lägg bud</button>
+          </div>
+        </div>
+        
     </div>
     <script type="module" src="/src/auction.ts"></script>
   </body>
