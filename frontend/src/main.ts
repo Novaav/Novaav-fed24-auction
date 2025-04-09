@@ -9,3 +9,8 @@ const loginButton = document.getElementById("goToLogin");
 loginButton?.addEventListener("click", () => {
   location.href = "/login.html";
 });
+
+const auctionButton = document.getElementById("goToAuction"); 
+auctionButton?.addEventListener("click", () => {
+  location.href = "/auction.html";
+});
