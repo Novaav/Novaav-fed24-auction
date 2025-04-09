@@ -12,6 +12,25 @@
         <h1>Auktioner</h1>
         <div class="auction-container">
           <div class="auction-create">
+            <div class="auction-create">
+              <h2>Skapa Auktion</h2>
+              <form id="createAuctionForm">
+                <input type="text" id="auctionTitle" placeholder="Titel" required />
+                <textarea
+                  id="auctionDescription"
+                  placeholder="Beskrivning"
+                  required
+                ></textarea>
+                <input
+                  type="number"
+                  id="startPrice"
+                  placeholder="Startpris"
+                  required
+                />
+                <input type="datetime" id="endDate" required />
+                <button type="submit">Skapa</button>
+              </form>
+            </div>
           </div>
       
           <div class="auction-list">
