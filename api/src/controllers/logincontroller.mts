@@ -1,4 +1,4 @@
-// Import user from the user model
+
 import bcrypt from "bcryptjs";
 import User from "../models/userSchema.mts";
 

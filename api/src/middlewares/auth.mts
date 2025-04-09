@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { UserDto } from "../models/userDto.mjs";
+import { TypeUser } from "../models/userSchema.mjs";
 import User from "../models/userSchema.mjs";
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
@@ -13,8 +13,8 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     if (!result) {
       res.status(401).end();
     } else {
-      const theUser: UserDto = result as UserDto;
-      const userFromDb = await User.findOne({ email: theUser.email });
+      const theUser: TypeUser = result as TypeUser;
+      const userFromDb = await User.findOne({ username: theUser.name });
 
       if (userFromDb) {
         next();
