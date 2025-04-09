@@ -15,7 +15,7 @@ export const auctionSocket = async (socket: Socket, io) => {
     socket.join(auctionToJoin);
 
     const auction = await Auction.findOne({ name: auctionToJoin });
-    socket.emit("bids", auction);
+    socket.emit("bids", auction?.bids);
   });
 
   socket.on("disconnect", () => {
