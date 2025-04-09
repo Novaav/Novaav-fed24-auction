@@ -15,8 +15,8 @@ const userSchema = new Schema<InterfaceUser>({
 // Hasha lösenordet innan det sparas i databasen
 userSchema.pre("save", async function (next) {
   if (this.isModified("password") || this.isNew) {
-    const salt = await bcrypt.genSalt(10);  // Salt
-    this.password = await bcrypt.hash(this.password, salt);  // Hasha lösenordet
+    const salt = await bcrypt.genSalt(10); // Salt
+    this.password = await bcrypt.hash(this.password, salt); // Hasha lösenordet
   }
   next();
 });
