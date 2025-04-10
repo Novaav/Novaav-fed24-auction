@@ -18,7 +18,7 @@ logInRouter.post('/', async (req: Request, res: Response) => {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
 
-        const token = jwt.sign({ username: loggedInUser.username }, process.env.JWT_SECRET as string);
+        const token = jwt.sign({ username: loggedInUser.name }, process.env.JWT_SECRET as string);
 
         const expirationDate = new Date();
         expirationDate.setHours(expirationDate.getHours() + 5); // Add 5 hours
@@ -29,7 +29,7 @@ logInRouter.post('/', async (req: Request, res: Response) => {
         });
 
         res.status(200).json({ message: 'Login successful', token });
-        console.log('Login successful for user:', loggedInUser.username);
+        console.log('Login successful for user:', loggedInUser.name);
     } catch (error) {
         res.status(500).json({ message: 'Internal server error', error: error.message });
     }
