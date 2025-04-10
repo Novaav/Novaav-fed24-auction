@@ -27,5 +27,5 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
     TheApp?.appendChild(theDiv);
   }
 
-  location.href = "/";
+  location.href = "/auction.html";
 });
