@@ -30,5 +30,35 @@ async function fetchAuctions() {
     console.error("Failed to fetch auctions:", error);
   }
 }
+document.getElementById("createAuctionForm")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
+  const auctionTitle = (document.getElementById("auctionTitle") as HTMLInputElement).value;
+  const auctionDescription = (document.getElementById("auctionDescription") as HTMLTextAreaElement).value;
+  const startPrice = parseFloat((document.getElementById("startPrice") as HTMLInputElement).value);
+  const endDate = (document.getElementById("endDate") as HTMLInputElement).value;
+
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/auctions",
+      {
+        title: auctionTitle,
+        description: auctionDescription,
+        startPrice,
+        endDate,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 201) {
+      alert("Auktionen skapades!");
+      fetchAuctions();
+    }
+  } catch (error) {
+    console.error("Failed to create auction:", error);
+    alert("Det gick inte att skapa auktionen. Försök igen.");
+  }
+});
 fetchAuctions();

@@ -18,8 +18,8 @@ const app = express();
 const port = 3000;
 const DB = process.env.DB_URL || "mongodb://localhost:27017/auctionDB";
 
-app.use("/auctions", auctionRouter);
 app.use(express.json());
+app.use("/auctions", auctionRouter);
 app.use(
   cors({
     credentials: true,
@@ -37,7 +37,7 @@ app.use("/login", logInRouter);
 app.use("/register", registerRouter); // Ingen auth här, så att registrering fungerar utan autentisering
 
 // Använd auth-middleware för rutter som kräver autentisering (t.ex. efter login)
-app.use(auth); // Auth-middleware ska appliceras efter login/register-rutter
+//app.use(auth); // Auth-middleware ska appliceras efter login/register-rutter
 
 // Starta servern och anslut till databasen
 const server = createServer(app);
