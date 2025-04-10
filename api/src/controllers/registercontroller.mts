@@ -1,32 +1,33 @@
-import { Request, Response } from "express";
-import User from "../models/userSchema.mts";
+import User from "../models/userSchema.mjs";
+import { InferSchemaType } from "mongoose";
+import { UserDto } from "../models/userDto.mjs";
+import { RegisterRequest } from "../routes/registerRoute.mjs";
 import bcrypt from "bcryptjs";
 
-export const registerUser = async (req: Request, res: Response) => {
-  try {
-    const { username, email, password } = req.body;
+type UserType = InferSchemaType<typeof User.schema>;
 
-    if (!username || !email || !password)
-      return res.status(400).json({ message: "All fields are required" });
+export const convertDbUserToDto = (dbUser: UserType): UserDto => {
+  return { username: dbUser.name, email: dbUser.email } satisfies UserDto;
+};
 
-    // Kolla om användaren redan finns (via både email och username)
-    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+export const createUser = async (data: RegisterRequest) => {
+  const existingUser = await User.findOne({ email: data.email });
 
-    if (existingUser)
-      return res
-        .status(409)
-        .json({ message: "User with this username or email already exists" });
-
-    // Hasha lösenordet innan det sparas i databasen
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Skapa och spara användaren
-    const newUser = new User({ username, email, password: hashedPassword });
-    await newUser.save();
-
-    res.status(201).json({ message: "User created successfully" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Something went wrong" });
+  if (existingUser) {
+    throw Error("User with email " + data.email + " already exists");
   }
+
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(data.password, salt);
+
+  //console.log(salt);
+  //console.log(hash);
+
+  const newUser = await User.create({
+    name: data.name,
+    email: data.email,
+    password: hash,
+  });
+
+  return convertDbUserToDto(newUser);
 };

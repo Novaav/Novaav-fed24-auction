@@ -8,9 +8,8 @@ import { logInRouter } from "./routes/loginroute.mts";
 import { auth } from "./middlewares/auth.mts";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import registerRouter from "./routes/registerroute.mts";
+import { registerRouter } from "./routes/registerroute.mjs";
 import auctionRouter from "./routes/auctionroute.mts";
-
 
 dotenv.config();
 
