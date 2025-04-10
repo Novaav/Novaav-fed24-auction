@@ -13,7 +13,7 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
   const response = await axios.post(
     "http://localhost:3000/login",
     {
-      username: userName,
+      name: userName,
       password: userPassword,
     },
     {
