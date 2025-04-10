@@ -4,7 +4,7 @@ import "./style.css";
 document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const userEmail = (document.getElementById("userName") as HTMLInputElement)
+  const userName = (document.getElementById("userName") as HTMLInputElement)
     .value;
   const userPassword = (
     document.getElementById("userPassword") as HTMLInputElement
@@ -13,7 +13,7 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
   const response = await axios.post(
     "http://localhost:3000/login",
     {
-      email: userEmail,
+      username: userName,
       password: userPassword,
     },
     {
