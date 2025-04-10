@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { convertDbUserToDto } from "./registerController.mjs";
+import { convertDbUserToDto } from "./registercontroller.mts";
 import User from "../models/userSchema.mjs";
 
 export const login = async (name: string, password: string) => {
