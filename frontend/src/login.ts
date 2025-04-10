@@ -4,7 +4,7 @@ import "./style.css";
 document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const userEmail = (document.getElementById("userEmail") as HTMLInputElement)
+  const userEmail = (document.getElementById("userName") as HTMLInputElement)
     .value;
   const userPassword = (
     document.getElementById("userPassword") as HTMLInputElement
