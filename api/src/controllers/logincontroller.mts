@@ -1,18 +1,20 @@
-
 import bcrypt from "bcryptjs";
-import User from "../models/userSchema.mts";
+import { convertDbUserToDto } from "./registerController.mjs";
+import User from "../models/userSchema.mjs";
 
-export const loginProcess = async (name: string, password: string) => {
-  const foundUser = await User.findOne({ name });
+export const login = async (name: string, password: string) => {
+  const foundUser = await User.findOne({ name: name });
 
   if (!foundUser) {
-    throw new Error("User not found with username: " + name);
+    throw Error("Did not find user with email " + name);
   }
 
-  const isPasswordValid = await bcrypt.compare(password, foundUser.password);
-  if (isPasswordValid) {
-    return foundUser;
+  // password -> foundUser.password
+
+  const success = await bcrypt.compare(password, foundUser.password);
+  if (success) {
+    return convertDbUserToDto(foundUser);
   } else {
-    throw new Error("Invalid password for user: " + name);
+    return null;
   }
 };

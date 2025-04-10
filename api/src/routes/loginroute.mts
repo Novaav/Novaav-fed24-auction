@@ -1,36 +1,35 @@
 import express, { Request, Response } from 'express';
-import { loginProcess } from '../controllers/loginController.mjs';
+import { login } from '../controllers/loginController.mjs';
 import jwt from 'jsonwebtoken';
 
-export const logInRouter = express.Router();
+export const loginRouter = express.Router();
 
-logInRouter.post('/', async (req: Request, res: Response) => {
-    const { username, password } = req.body;
+loginRouter.post("/", async (req, res) => {
+    const { name, password } = req.body;
 
     try {
-        if (!username || !password) {
-            return res.status(400).json({ message: 'Username and password are required' });
+        if (!name || !password) {
+            res.status(400).send("Missing login information");
+        } else {
+            const loggedInUser = await login(name, password);
+
+            if (!loggedInUser) {
+                res.status(400).json({ message: "Incorrect email/password" });
+            } else {
+                const token = jwt.sign(loggedInUser, "my-secret");
+
+                const currentDate = new Date();
+                currentDate.setHours(currentDate.getHours() + 1);
+
+                res.cookie("login", token, {
+                    expires: currentDate,
+                    httpOnly: false,
+                });
+
+                res.status(200).json(loggedInUser);
+            }
         }
-
-        const loggedInUser = await loginProcess(username, password);
-
-        if (!loggedInUser) {
-            return res.status(401).json({ message: 'Invalid username or password' });
-        }
-
-        const token = jwt.sign({ username: loggedInUser.name }, process.env.JWT_SECRET as string);
-
-        const expirationDate = new Date();
-        expirationDate.setHours(expirationDate.getHours() + 5); // Add 5 hours
-
-        res.cookie('login', token, {
-            expires: expirationDate,
-            httpOnly: true,
-        });
-
-        res.status(200).json({ message: 'Login successful', token });
-        console.log('Login successful for user:', loggedInUser.name);
-    } catch (error) {
-        res.status(500).json({ message: 'Internal server error', error: error.message });
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
     }
 });

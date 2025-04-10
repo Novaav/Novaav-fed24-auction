@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 import cors from "cors";
 import { auctionSocket } from "./sockets/auctionSocket.mjs";
 import cookieParser from "cookie-parser";
-import { logInRouter } from "./routes/loginroute.mts";
+import { loginRouter } from "./routes/loginroute.mts";
 import { auth } from "./middlewares/auth.mts";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -30,7 +30,7 @@ app.get("/ping", (_, res) => {
   res.status(200).send("Api is working");
 });
 
-app.use("/login", logInRouter);
+app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use(auth);
 app.use("/auctions", auctionRouter);
