@@ -36,8 +36,10 @@ document.getElementById("createAuctionForm")?.addEventListener("submit", async (
   const auctionTitle = (document.getElementById("auctionTitle") as HTMLInputElement).value;
   const auctionDescription = (document.getElementById("auctionDescription") as HTMLTextAreaElement).value;
   const startPrice = parseFloat((document.getElementById("startPrice") as HTMLInputElement).value);
-  const endDate = (document.getElementById("endDate") as HTMLInputElement).value;
+  const endDateInput = (document.getElementById("endDate") as HTMLInputElement).value;
 
+  const endDate = new Date(endDateInput);
+  endDate.setHours(23, 59, 59, 999);
   try {
     const response = await axios.post(
       "http://localhost:3000/auctions",

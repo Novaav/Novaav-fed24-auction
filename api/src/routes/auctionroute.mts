@@ -19,6 +19,9 @@ auctionRouter.post("/", async (req, res) => {
   }
 
   try {
+    const normalizedEndDate = new Date(endDate);
+    normalizedEndDate.setHours(23, 59, 59, 999);
+    
     const newAuction = new Auction({
       title,
       description,
