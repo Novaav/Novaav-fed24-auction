@@ -21,15 +21,18 @@ auctionRouter.post("/", async (req, res) => {
   try {
     const normalizedEndDate = new Date(endDate);
     normalizedEndDate.setHours(23, 59, 59, 999);
-    
+
+    const user = res.locals.user;
+    // Hämta användarinformation från res.locals.user
+
     const newAuction = new Auction({
       title,
       description,
       startPrice,
       endDate,
       createdBy: {
-        name: "Test User", 
-        email: "test@example.com", 
+        name: user.name,
+        email: user.email,
       },
       bids: [],
     });

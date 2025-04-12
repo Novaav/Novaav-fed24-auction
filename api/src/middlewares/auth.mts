@@ -22,6 +22,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
       if (userFromDb) {
         console.log("User found in DB", userFromDb);
+        res.locals.user = userFromDb; // Spara användaren i res.locals för att använda den senare i routen
         next();
       } else {
         console.log("User not found in DB", userFromDb);
