@@ -22,15 +22,30 @@ async function fetchAuctions() {
         <p>Startpris: ${auction.startPrice} kr</p>
         <p>Skapad av: ${auction.createdBy.name}</p>
         <p>Slutar: ${new Date(auction.endDate).toLocaleString()}</p>
-        <button onclick="joinAuction('${auction._id}')">Gå med</button>
+        <button class="Join-room-btn" data-title=('${auction.title}')">Gå med</button>
       `;
 
       auctionList?.appendChild(auctionDiv);
+    });
+    // Event listener for the auction list buttons
+    document.querySelectorAll(".Join-room-btn").forEach((button) => {
+      button.addEventListener("click", function (e) {
+        e.preventDefault();
+        const targetAuction = e.currentTarget as HTMLButtonElement;
+        const auctionTitle = targetAuction.getAttribute("data-title") as string;
+        console.log("User clicked auction:", auctionTitle);
+        if (auctionTitle) {
+          //joinAuction(auctionTitle);
+        }
+      });
     });
   } catch (error) {
     console.error("Failed to fetch auctions:", error);
   }
 }
+
+
+
 document.getElementById("createAuctionForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
