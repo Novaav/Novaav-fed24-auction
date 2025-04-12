@@ -20,6 +20,7 @@ async function fetchAuctions() {
         <h3>${auction.title}</h3>
         <p>${auction.description}</p>
         <p>Startpris: ${auction.startPrice} kr</p>
+        <p>Skapad av: ${auction.createdBy.name}</p>
         <p>Slutar: ${new Date(auction.endDate).toLocaleString()}</p>
         <button onclick="joinAuction('${auction._id}')">Gå med</button>
       `;

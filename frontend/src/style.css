@@ -150,6 +150,7 @@ button:focus-visible {
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  color: #1a1a1a;
 }
 
 #auctionList .auction h3 {
