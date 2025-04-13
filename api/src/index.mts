@@ -32,7 +32,7 @@ app.get("/ping", (_, res) => {
 
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
-app.use(auth);
+//app.use(auth);
 app.use("/auctions", auctionRouter);
 
 const server = createServer(app);
