@@ -1,10 +1,13 @@
 import axios from "axios";
+import { Auction } from "../src/models/Imodels.ts";
+import { joinAuction } from "../src/sockets/sockethelpers.ts";
+import '../src/sockets/auctionSockets.ts';
 
 const auctionList = document.getElementById("auctionList");
 
 async function fetchAuctions() {
   try {
-    const response = await axios.get("http://localhost:3000/auctions", {
+    const response = await axios.get<Auction[]>("http://localhost:3000/auctions", {
       withCredentials: true,
     });
 
@@ -12,7 +15,7 @@ async function fetchAuctions() {
 
     auctionList!.innerHTML = "";
 
-    auctions.forEach((auction: any) => {
+    auctions.forEach((auction: Auction) => {
       const auctionDiv = document.createElement("div");
       auctionDiv.classList.add("auction");
 
@@ -22,15 +25,33 @@ async function fetchAuctions() {
         <p>Startpris: ${auction.startPrice} kr</p>
         <p>Skapad av: ${auction.createdBy.name}</p>
         <p>Slutar: ${new Date(auction.endDate).toLocaleString()}</p>
-        <button onclick="joinAuction('${auction._id}')">Gå med</button>
+        <button class="Join-room-btn" data-title='${auction._id}'>Gå med</button>
       `;
 
       auctionList?.appendChild(auctionDiv);
+    });
+    // Event listener for the auction list buttons
+    document.querySelectorAll(".Join-room-btn").forEach((button) => {
+      button.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        const targetAuction = e.currentTarget as HTMLButtonElement;
+        const auctionId = targetAuction.getAttribute("data-title") as string;
+
+
+        if (auctionId) {
+          console.log("User clicked auction:", auctionId);
+          joinAuction(auctionId); // JOIN ACTION
+        }
+      });
     });
   } catch (error) {
     console.error("Failed to fetch auctions:", error);
   }
 }
+
+
+
 document.getElementById("createAuctionForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -65,3 +86,4 @@ document.getElementById("createAuctionForm")?.addEventListener("submit", async (
   }
 });
 fetchAuctions();
+
