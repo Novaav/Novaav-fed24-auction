@@ -25,7 +25,7 @@ async function fetchAuctions() {
         <p>Startpris: ${auction.startPrice} kr</p>
         <p>Skapad av: ${auction.createdBy.name}</p>
         <p>Slutar: ${new Date(auction.endDate).toLocaleString()}</p>
-        <button class="Join-room-btn" data-title=('${auction._id}')">Gå med</button>
+        <button class="Join-room-btn" data-title='${auction._id}'>Gå med</button>
       `;
 
       auctionList?.appendChild(auctionDiv);

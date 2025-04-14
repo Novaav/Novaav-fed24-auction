@@ -7,10 +7,9 @@ export function joinAuction(auctionId: string) {
     socket.emit("joinAuction", auctionId); // EMIT JOIN AUCTION
 }
 
-// Display auction data in modal
 export function displayAuctionModal(auction: Auction): void {
     // Hide auction list
-    const auctionList = document.getElementById("auctionList") as HTMLElement;
+    const auctionList = document.querySelector(".auction-list") as HTMLElement;
     if (auctionList) {
         auctionList.style.display = "none";
     }
