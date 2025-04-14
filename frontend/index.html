@@ -5,14 +5,39 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Auktion</title>
+    <link rel="stylesheet" href="src/styles/main.css" />
+    <link rel="stylesheet" href="src/styles/base.css" />
   </head>
   <body>
-    <div id="app">
-      <button id="goToLogin">logga in</button>
-      <button id="goToRegister" type="button">registrera</button>
-      <button id="goToAuction" type="button">Auktioner</button>
+    <!-- Navbar laddas in dynamiskt -->
+    <div id="navbar-container"></div>
 
-    </div>
-    <script type="module" src="/src/main.ts"></script>
+    <!-- Hero Section -->
+    <main id="app" class="hero-container">
+      <div class="hero-left">
+        <h1 class="hero-title">Upptäck exklusiv konst och samlarobjekt</h1>
+        <p class="hero-description">
+          Handla konst från hela världen – noggrant kuraterat och tillgängligt via auktioner.
+        </p>
+
+        <div class="button-group vertical-layout">
+          <div class="button-row">
+            <button id="goToRegister" class="secondary-button">Registrera dig</button>
+            <button id="goToLogin" class="secondary-button">Logga in</button>
+          </div>
+          <button id="goToAuction" class="primary-button explore-button">Utforska Auktioner</button>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="slideshow-container">
+          <img src="public/images/1.jpg" class="slide active" />
+          <img src="public/images/6.jpg" class="slide" />
+          <img src="public/images/2.jpeg" class="slide" />
+        </div>
+      </div>
+    </main>
+
+    <script type="module" src="src/main.ts"></script>
   </body>
 </html>

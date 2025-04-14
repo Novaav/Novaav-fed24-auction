@@ -1,5 +1,8 @@
-import "./style.css";
+
 import axios from "axios";
+import "./styles/register.css";
+import "./styles/base.css";
+
 
 document
   .getElementById("registerForm")
