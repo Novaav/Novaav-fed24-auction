@@ -1,5 +1,6 @@
 import axios from "axios";
-import "./style.css";
+import "./styles/login.css";
+import "./styles/base.css";
 
 document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
