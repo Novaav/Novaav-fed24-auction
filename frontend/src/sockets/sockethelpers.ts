@@ -2,9 +2,9 @@ import { socket } from './auctionSockets'
 import { Auction } from '../models/Imodels';
 
 
-export function joinAuction(auctionTitle: string) {
-    console.log("Joining auction:", auctionTitle);
-    socket.emit("joinAuction", auctionTitle); // EMIT JOIN AUCTION
+export function joinAuction(auctionId: string) {
+    console.log("Joining auction:", auctionId);
+    socket.emit("joinAuction", auctionId); // EMIT JOIN AUCTION
 }
 
 // Display auction data in modal
@@ -24,7 +24,9 @@ export function displayAuctionModal(auction: Auction): void {
 
     modalTitle.innerHTML = auction.title;
     modalDescription.innerHTML = auction.description;
+    modalCurrentBid.innerHTML = `Nuvarande bud: ${auction.startPrice} kr`;
     modalEndTime.innerHTML = `Slutar: ${new Date(auction.endDate).toLocaleString()}`;
+
 
     // Show the modal
     if (auctionModal) {
