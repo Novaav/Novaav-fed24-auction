@@ -16,15 +16,13 @@ export const auctionSocket = async (socket: Socket, io) => {
     if (loginCookie) {
       const decodedUser = jwt.decode(loginCookie) as UserDto;
       if (decodedUser) {
-        console.log("User decoded from cookie:", decodedUser)
+        console.log("User decoded from cookie:", decodedUser);
         socket.emit("userConnected", decodedUser); // emit User connect
       }
     }
   } catch (error) {
     console.error("Error decoding cookie:", error);
   }
-
-
 
   const auctions = await Auction.find();
   socket.emit("auctionList", auctions);
@@ -37,14 +35,10 @@ export const auctionSocket = async (socket: Socket, io) => {
       if (room !== socket.id) {
         console.log("Leaving room:", room);
         socket.leave(room);
-
       }
     }
 
-
-
     socket.join(auctionId); // Join room by ID
-
 
     try {
       const auction = await Auction.findById(auctionId);
