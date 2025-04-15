@@ -1,0 +1,114 @@
+
+
+.auction-container {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .auction-create {
+    flex: 1;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  .auction-create h2 {
+    margin-bottom: 15px;
+  }
+  
+  .auction-create form input,
+  .auction-create form textarea,
+  .auction-create form button {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .auction-create form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .auction-create form button:hover {
+    background-color: blue;
+  }
+  
+  .auction-list {
+    flex: 2;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .auction-list h2 {
+    margin-bottom: 15px;
+  }
+  
+  #auctionList .auction {
+    background: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #1a1a1a;
+  }
+  
+  #auctionList .auction h3 {
+    margin: 0 0 10px;
+  }
+  
+  #auctionList .auction button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  #auctionList .auction button:hover {
+    background-color: #218838;
+  }
+  
+  .modal {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: #ffffff;
+    color: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: center;
+  }
+  
+  .modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .modal-content button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .modal-content button:hover {
+    background-color: #0056b3;
+  }
