@@ -1,16 +1,19 @@
 import axios from "axios";
-import "./styles/base.css";
+import "./styles/auction.css";
 import { Auction } from "../src/models/Imodels.ts";
 import { joinAuction } from "../src/sockets/sockethelpers.ts";
-import '../src/sockets/auctionSockets.ts';
+import "../src/sockets/auctionSockets.ts";
 
 const auctionList = document.getElementById("auctionList");
 
 async function fetchAuctions() {
   try {
-    const response = await axios.get<Auction[]>("http://localhost:3000/auctions", {
-      withCredentials: true,
-    });
+    const response = await axios.get<Auction[]>(
+      "http://localhost:3000/auctions",
+      {
+        withCredentials: true,
+      }
+    );
 
     const auctions = response.data;
 
@@ -26,7 +29,9 @@ async function fetchAuctions() {
         <p>Startpris: ${auction.startPrice} kr</p>
         <p>Skapad av: ${auction.createdBy.name}</p>
         <p>Slutar: ${new Date(auction.endDate).toLocaleString()}</p>
-        <button class="Join-room-btn" data-title='${auction._id}'>Gå med</button>
+        <button class="Join-room-btn" data-title='${
+          auction._id
+        }'>Gå med</button>
       `;
 
       auctionList?.appendChild(auctionDiv);
@@ -39,7 +44,6 @@ async function fetchAuctions() {
         const targetAuction = e.currentTarget as HTMLButtonElement;
         const auctionId = targetAuction.getAttribute("data-title") as string;
 
-
         if (auctionId) {
           console.log("User clicked auction:", auctionId);
           joinAuction(auctionId); // JOIN ACTION
@@ -51,40 +55,47 @@ async function fetchAuctions() {
   }
 }
 
+document
+  .getElementById("createAuctionForm")
+  ?.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-
-document.getElementById("createAuctionForm")?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const auctionTitle = (document.getElementById("auctionTitle") as HTMLInputElement).value;
-  const auctionDescription = (document.getElementById("auctionDescription") as HTMLTextAreaElement).value;
-  const startPrice = parseFloat((document.getElementById("startPrice") as HTMLInputElement).value);
-  const endDateInput = (document.getElementById("endDate") as HTMLInputElement).value;
-
-  const endDate = new Date(endDateInput);
-  endDate.setHours(23, 59, 59, 999);
-  try {
-    const response = await axios.post(
-      "http://localhost:3000/auctions",
-      {
-        title: auctionTitle,
-        description: auctionDescription,
-        startPrice,
-        endDate,
-      },
-      {
-        withCredentials: true,
-      }
+    const auctionTitle = (
+      document.getElementById("auctionTitle") as HTMLInputElement
+    ).value;
+    const auctionDescription = (
+      document.getElementById("auctionDescription") as HTMLTextAreaElement
+    ).value;
+    const startPrice = parseFloat(
+      (document.getElementById("startPrice") as HTMLInputElement).value
     );
+    const endDateInput = (
+      document.getElementById("endDate") as HTMLInputElement
+    ).value;
 
-    if (response.status === 201) {
-      alert("Auktionen skapades!");
-      fetchAuctions();
+    const endDate = new Date(endDateInput);
+    endDate.setHours(23, 59, 59, 999);
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/auctions",
+        {
+          title: auctionTitle,
+          description: auctionDescription,
+          startPrice,
+          endDate,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 201) {
+        alert("Auktionen skapades!");
+        fetchAuctions();
+      }
+    } catch (error) {
+      console.error("Failed to create auction:", error);
+      alert("Det gick inte att skapa auktionen. Försök igen.");
     }
-  } catch (error) {
-    console.error("Failed to create auction:", error);
-    alert("Det gick inte att skapa auktionen. Försök igen.");
-  }
-});
+  });
 fetchAuctions();
-

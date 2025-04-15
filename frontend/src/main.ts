@@ -2,16 +2,15 @@ import "./styles/main.css";
 import "./styles/base.css";
 
 // Ladda navbar dynamiskt
-fetch('/navbar.html')
+fetch("/navbar.html")
   .then((res) => res.text())
   .then((html) => {
-    const container = document.getElementById('navbar-container');
+    const container = document.getElementById("navbar-container");
     if (container) {
       container.innerHTML = html;
-      setupNavbarEventListeners(); 
+      setupNavbarEventListeners();
     }
   });
-
 
 function setupNavbarEventListeners() {
   const registerButton = document.getElementById("goToRegister");
@@ -30,15 +29,15 @@ function setupNavbarEventListeners() {
   });
 }
 
-// 3. Bildspel / slideshow
-let slideIndex = 0;
-const slides = document.querySelectorAll('.slide') as NodeListOf<HTMLImageElement>;
+// // 3. Bildspel / slideshow
+// let slideIndex = 0;
+// const slides = document.querySelectorAll('.slide') as NodeListOf<HTMLImageElement>;
 
-function showSlides() {
-  slides.forEach((slide) => slide.classList.remove('active'));
-  slideIndex = (slideIndex + 1) % slides.length;
-  slides[slideIndex].classList.add('active');
-}
+// function showSlides() {
+//   slides.forEach((slide) => slide.classList.remove('active'));
+//   slideIndex = (slideIndex + 1) % slides.length;
+//   slides[slideIndex].classList.add('active');
+// }
 
-setInterval(showSlides, 4000);
-showSlides();
+// setInterval(showSlides, 4000);
+// showSlides();
