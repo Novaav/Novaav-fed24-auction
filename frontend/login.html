@@ -1,18 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Logga in</title>
+    <link rel="stylesheet" href="src/styles/main.css" />
+    <link rel="stylesheet" href="src/styles/base.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div id="app">
-      <form id="loginForm">
-        <input type="text" id="userName" />
-        <input type="password" id="userPassword" />
-        <button>Logga in</button>
+    <!-- Dynamisk navbar -->
+    <div id="navbar-container"></div>
+
+   
+    <div class="container">
+      <form id="loginForm" class="form-card">
+        <h2>Logga in</h2>
+
+        <label for="userName">Användarnamn</label>
+        <input type="text" id="userName" required />
+
+        <label for="userPassword">Lösenord</label>
+        <input type="password" id="userPassword" required />
+
+        <button type="submit" class="primary-button">Logga in</button>
+
+        <p class="login-link">
+          Har inte ett konto? <a href="/register.html">Registrera här</a>
+        </p>
       </form>
+      <div id="app"></div>
     </div>
-    <script type="module" src="/src/login.ts"></script>
+
+    <script type="module" src="src/login.ts"></script>
+    <script type="module" src="src/main.ts"></script>
   </body>
 </html>

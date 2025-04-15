@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
+
+    <div id="navbar-container"></div>
+
     <div id="app">
       <h1>Auktioner</h1>
       <div class="auction-container">
@@ -34,12 +37,14 @@
           <div class="auction-list">
             <h2>Pågående Auktioner</h2>
             <div id="auctionList"></div>
+          </div>
           <div id="auctionModal" class="modal">
-            <div class="modal-content">
+            <div id="modalContent" class="modal-content">
               <h2 id="modalTitle">Auktionstitel</h2>
               <p id="modalDescription">Beskrivning</p>
               <p id="modalCurrentBid">Nuvarande bud: 0kr</p>
               <p id="modalEndTime">Slutar: </p>
+              
               <input
                 type="number"
                 id="bidAmount"
@@ -53,5 +58,6 @@
       </div>
     </div>
     <script type="module" src="/src/auction.ts"></script>
+    <script type="module" src="src/main.ts"></script>
   </body>
 </html>

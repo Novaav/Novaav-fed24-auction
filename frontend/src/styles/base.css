@@ -1,0 +1,40 @@
+/* Reset och gemensamma stilar */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #fff;
+  color: #222;
+  height: 100%;
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Formulärstilar */
+input, button {
+  font-size: 1rem;
+  color: #444;
+}
+
+input:focus, button:focus {
+  outline: none;
+}
+
+button {
+  padding: 14px 28px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button.primary-button {
+  background-color: #d45b77;
+  color: white;
+}
+
+button.primary-button:hover {
+  background-color: #f88f9c;
+}
