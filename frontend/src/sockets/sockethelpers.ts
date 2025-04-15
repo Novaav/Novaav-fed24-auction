@@ -5,6 +5,10 @@ export function joinAuction(auctionId: string) {
   console.log("Joining auction:", auctionId);
   socket.emit("joinAuction", auctionId); // EMIT JOIN AUCTION
 }
+export function leaveAuction(): void {
+    socket.emit("leaveAuction"); // emit leaveAuction event kommer ligga i eventlistinern i auctionSockets.ts
+}
+
 
 export function displayAuctionModal(auction: Auction): void {
   // Hide auction list
@@ -50,9 +54,43 @@ export function displayAuctionModal(auction: Auction): void {
       modalContent.appendChild(myDiv);
     }
   });
+  
+    // Show the modal
+    if (auctionModal) {
+        auctionModal.style.display = "block";
+    }
+    addBackButton(auctionModal, auctionList); // Added backbutton!!!
+}
+export function addBackButton(modal: HTMLElement, auctionList: HTMLElement): void {
 
+    //hämtar modalen
+    const modalContent = document.getElementById("modalContent") as HTMLElement;
+    if (!modalContent) return;
+
+    const existingBackButton = document.querySelector(".back-button") as HTMLButtonElement;
+    if (existingBackButton) {
+        existingBackButton.remove(); // tar bort knappen om den inte finns
+    }
+    // skapa en ny knapp
+    const backButton = document.createElement("button");
+    backButton.classList.add("back-button");
+    backButton.innerHTML = "Tillbaka till listan";
+
+    backButton.addEventListener("click", function () {
+        // Göm modalen - visa auktionslistan
+        modal.style.display = "none";
+        auctionList.style.display = "block";
+
+        leaveAuction(); // EMIT LEAVE AUCTION
+
+        // för att sedan ta bort backknappen
+        backButton.remove();
+    });
+    // Append the button to modal
+    modalContent.appendChild(backButton);
   // Show the modal
   if (auctionModal) {
     auctionModal.style.display = "block";
   }
 }
+
