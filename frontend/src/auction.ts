@@ -1,5 +1,4 @@
 import axios from "axios";
-import "./styles/auction.css";
 import "./styles/base.css";
 import { Auction } from "../src/models/Imodels.ts";
 import { joinAuction } from "../src/sockets/sockethelpers.ts";

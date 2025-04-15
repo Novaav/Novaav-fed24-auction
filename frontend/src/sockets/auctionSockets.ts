@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-import "../style.css";
+import "../styles/main.css";
 import { Auction } from '../models/Imodels';
 import { displayAuctionModal } from './sockethelpers';
 
