@@ -67,6 +67,15 @@ export const auctionSocket = async (socket: Socket, io) => {
       socket.emit("error", "Failed to fetch auction details.");
     }
   });
+  // LEAVE AUCTION
+  socket.on("leaveAuction", () => {
+    for (const room of socket.rooms) {
+      if (room !== socket.id) {
+        console.log("User left auction:", room);
+        socket.leave(room);
+      }
+    }
+  });
 
   socket.on(
     "placedBid",
