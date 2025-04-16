@@ -1,8 +1,11 @@
 import { socket } from "./auctionSockets";
 import { Auction } from "../models/Imodels";
 
+export let selectedAuction = "";
+
 export function joinAuction(auctionId: string) {
   console.log("Joining auction:", auctionId);
+  selectedAuction = auctionId;
   socket.emit("joinAuction", auctionId); // EMIT JOIN AUCTION
 }
 

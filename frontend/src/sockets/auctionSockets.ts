@@ -1,8 +1,10 @@
 import { io } from "socket.io-client";
 import "../styles/main.css";
-import { Auction } from "../models/Imodels";
+import { Auction, UserInfo } from "../models/Imodels";
 import { displayAuctionModal } from "./sockethelpers";
 import cookie from "cookie";
+import jwt from "jsonwebtoken";
+import { selectedAuction } from "./sockethelpers";
 
 export const socket = io("http://localhost:3000", {
   withCredentials: true,
@@ -21,12 +23,21 @@ socket.on("userConnected", (user) => {
 });
 
 document.getElementById("placeBidButton")?.addEventListener("click", () => {
-  const cookies = cookie.parse(socket.handshake.headers.cookie || "");
+  const cookies = cookie.parse(document.cookie || "");
   const loginCookie = cookies.login;
-  const decodedUser = jwt.decode(loginCookie) as UserDto;
+  if (loginCookie) {
+    const decoded = jwt.decode(loginCookie);
+    if (!decoded || typeof decoded === "string") {
+      console.error("Invalid token or decoding failed");
+      return;
+    }
 
-  const inputBid = document.getElementById("bidAmount") as HTMLInputElement;
-  const newBidAmount = inputBid.value;
+    const decodedUser = decoded as UserInfo;
+    const bidBy = decodedUser.name;
+    const bidEmail = decodedUser.email;
+    const inputBid = document.getElementById("bidAmount") as HTMLInputElement;
+    const newBidAmount = inputBid.value;
 
-  socket.emit("placedBid", newBidAmount);
+    socket.emit("placedBid", newBidAmount, bidBy, bidEmail, selectedAuction);
+  }
 });
