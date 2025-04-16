@@ -19,9 +19,11 @@ socket.on("userConnected", (user) => {
   console.log("Connected to server with ID:", user);
 });
 
-document.getElementById("placeBidButton")?.addEventListener("click", () => {
-  const inputBid = document.getElementById("bidAmount") as HTMLInputElement;
-  const newBidAmount = inputBid.value;
+socket.on("bidUpdate", (updatedAuction: Auction) => {
+  console.log("Bid update received:", updatedAuction);
+  displayAuctionModal(updatedAuction); // Update auction details in modal(socket)
+});
 
-  socket.emit("placedBid", newBidAmount);
+socket.on("error", (errorMessage: string) => {
+  alert(errorMessage);
 });

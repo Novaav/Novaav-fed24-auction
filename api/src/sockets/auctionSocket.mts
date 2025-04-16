@@ -3,6 +3,7 @@ import cookie from "cookie";
 import Auction from "../models/auctionSchema.mts";
 import jwt from "jsonwebtoken";
 import { UserDto } from "../models/userDto.mts";
+import { Document } from "mongoose";
 
 export const auctionSocket = async (socket: Socket, io) => {
   console.log("a user connected", socket.id);
@@ -48,6 +49,7 @@ export const auctionSocket = async (socket: Socket, io) => {
         return;
       } else {
         console.log("Auction found:", auction.title);
+        console.log("Auction bids:", auction.bids);
         socket.emit("auctionDetails", auction); // EMIT AUCTION DETAILS
       }
     } catch (error) {
@@ -64,6 +66,96 @@ export const auctionSocket = async (socket: Socket, io) => {
       }
     }
   });
+  // PLACE BID
+  interface BidData {
+    auctionId: string;
+    amount: number;
+  }
+  interface Bid {
+    amount: number;
+    placedBy: {
+      name: string;
+      email: string;
+    };
+  }
+  interface AuctionData {
+    title: string;
+    description: string;
+    startPrice: number;
+    endDate: Date;
+    createdBy: {
+      name: string;
+      email: string;
+    };
+    bids: Bid[];
+  }
+
+  socket.on("placeBid", async (data: BidData) => {
+    try {
+      const { auctionId, amount } = data;
+      console.log(`Received bid: ${amount} for auction: ${auctionId}`);
+
+      const cookies = cookie.parse(socket.handshake.headers.cookie || "");
+      const loginCookie = cookies.login;
+
+      if (!loginCookie) {
+        socket.emit("error", "Du måste vara inloggad för att lägga bud"); // EMIT ERROR
+        return;
+      }
+      const decodedUser = jwt.decode(loginCookie) as UserDto;
+      if (!decodedUser) {
+        socket.emit("error", "Ogiltig inloggning, logga in igen"); // EMIT ERROR
+        return;
+      }
+
+      const auction = await Auction.findById(auctionId) as Document & AuctionData;
+      if (!auction) {
+        socket.emit("error", "Auktionen hittades inte");
+        return;
+      }
+
+      // Valid bid amount och find highest bid
+      if (auction.bids.length > 0) {
+
+        const highestBid = auction.bids.reduce( // Hitta högsta budet
+          (max, bid) => bid.amount > max.amount ? bid : max,
+          auction.bids[0]
+        );
+
+        if (amount <= highestBid.amount) { // om budet är lägre än högsta budet
+          socket.emit("error", "Budet måste vara högre än nuvarande högsta bud"); // EMIT ERROR
+          return;
+        }
+      } else if (amount < auction.startPrice) { // detta är första budet
+        socket.emit("error", "Budet måste vara minst startpriset");
+        return;
+      }
+
+      // Create and add new bid
+      const newBid = {
+        amount,
+        placedBy: {
+          name: decodedUser.username,
+          email: decodedUser.email
+        }
+      };
+
+      // Add bid to auction and save
+      auction.bids.push(newBid);
+      await auction.save();
+
+      console.log(`New bid of ${amount} kr placed by ${decodedUser.username} on auction ${auction.title}`);
+
+      // Broadcast to all clients in this auction room
+      io.to(auctionId).emit("bidUpdate", auction); // EMIT BID UPDATE to ROOM(auctionId)
+
+    } catch (error) {
+      console.error("Error processing bid:", error);
+      socket.emit("error", "Det gick inte att lägga budet");
+    }
+  });
+
+
 
   socket.on("disconnect", () => {
     console.log("a user disconnected", socket.id);

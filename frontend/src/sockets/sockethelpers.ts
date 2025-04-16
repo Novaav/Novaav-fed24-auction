@@ -8,7 +8,14 @@ export function joinAuction(auctionId: string) {
 export function leaveAuction(): void {
     socket.emit("leaveAuction"); // emit leaveAuction event kommer ligga i eventlistinern i auctionSockets.ts
 }
-
+export function placeBid(auctionId: string, amount: number): void {
+    if (isNaN(amount) || amount <= 0) {
+        alert("Ange ett giltigt belopp");
+        return;
+    }
+    console.log(`Lägger bud: ${amount} kr på auktion: ${auctionId}`);
+    socket.emit("placeBid", { auctionId, amount }); // EMIT PLACE BID
+}
 
 export function displayAuctionModal(auction: Auction): void {
     // Hide auction list
@@ -38,6 +45,23 @@ export function displayAuctionModal(auction: Auction): void {
         auction.endDate
     ).toLocaleString()}`;
 
+    const modalContent = document.getElementById("modalContent") as HTMLElement;
+    if (!modalContent) return;
+
+    // viktig - ta bort befintlig budcontainer om den finns
+    // så att vi inte får dubbla bud
+    const existingContainer = document.getElementById("bidContainer");
+    if (existingContainer) {
+        existingContainer.remove();
+    }
+
+    let bidContainer = document.createElement("div");
+    bidContainer.id = "bidContainer";
+    bidContainer.classList.add("bid-container");
+    modalContent.appendChild(bidContainer);
+
+    bidContainer.innerHTML = ""; // Clear previous bids
+
     auction.bids.forEach((bid) => {
         const createdByP = document.createElement("p");
         const amountP = document.createElement("p");
@@ -51,9 +75,21 @@ export function displayAuctionModal(auction: Auction): void {
 
         const modalContent = document.getElementById("modalContent");
         if (modalContent) {
-            modalContent.appendChild(myDiv);
+            bidContainer.appendChild(myDiv);
         }
     });
+    // eventlistener to bid button
+    const bidButton = document.getElementById("placeBidButton") as HTMLButtonElement;
+    const bidInput = document.getElementById("bidAmount") as HTMLInputElement;
+
+    if (bidButton) {
+        bidButton.onclick = () => {
+            const amount = parseInt(bidInput.value);
+            placeBid(auction._id, amount);
+            bidInput.value = ""; // Clear input after bid
+            console.log("Bid button clicked, auction ID:", auction._id, "amount:", amount);
+        };
+    }
 
     // Show the modal
     if (auctionModal) {
