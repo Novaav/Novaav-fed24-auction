@@ -55,6 +55,7 @@ export const auctionSocket = async (socket: Socket, io) => {
       socket.emit("error", "Failed to fetch auction details.");
     }
   });
+  socket.on("placedBid", (newBidAmount: string) => {});
 
   socket.on("disconnect", () => {
     console.log("a user disconnected", socket.id);
