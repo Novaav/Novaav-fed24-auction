@@ -113,6 +113,11 @@ export const auctionSocket = async (socket: Socket, io) => {
         socket.emit("error", "Auktionen hittades inte");
         return;
       }
+      // check user is not the creator of the auction
+      if (decodedUser.email === auction.createdBy.email) {
+        socket.emit("error", "Du kan inte bjuda på din egen auktion"); // EMIT ERROR
+        return;
+      }
 
       // Valid bid amount och find highest bid
       if (auction.bids.length > 0) {
@@ -122,7 +127,8 @@ export const auctionSocket = async (socket: Socket, io) => {
           auction.bids[0]
         );
 
-        if (amount <= highestBid.amount) { // om budet är lägre än högsta budet
+        // om budet är lägre än högsta budet
+        if (amount <= highestBid.amount) {
           socket.emit("error", "Budet måste vara högre än nuvarande högsta bud"); // EMIT ERROR
           return;
         }
