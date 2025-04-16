@@ -1,9 +1,14 @@
 import { socket } from "./auctionSockets";
 import { Auction } from "../models/Imodels";
 
+export let selectedAuction = "";
+
 export function joinAuction(auctionId: string) {
-    console.log("Joining auction:", auctionId);
-    socket.emit("joinAuction", auctionId); // EMIT JOIN AUCTION
+
+  console.log("Joining auction:", auctionId);
+  selectedAuction = auctionId;
+  socket.emit("joinAuction", auctionId); // EMIT JOIN AUCTION
+
 }
 export function leaveAuction(): void {
     socket.emit("leaveAuction"); // emit leaveAuction event kommer ligga i eventlistinern i auctionSockets.ts
