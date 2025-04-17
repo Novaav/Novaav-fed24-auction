@@ -123,11 +123,18 @@ export const auctionSocket = async (socket: Socket, io) => {
         socket.emit("error", "Auktionen hittades inte");
         return;
       }
-
+      // Check IF user is the creator
       if (decodedUser.email === auction.createdBy.email) {
         socket.emit("error", "Du kan inte bjuda på din egen auktion"); // EMIT ERROR
         return;
       }
+      // check if auction is ended
+      const currentDate = new Date();
+      if (currentDate > auction.endDate) {
+        socket.emit("error", "Auktionen är avslutad"); // EMIT ERROR
+        return;
+      }
+
 
       // Valid bid amount och find highest bid
       if (auction.bids.length > 0) {
