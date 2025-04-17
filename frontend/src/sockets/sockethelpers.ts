@@ -12,6 +12,17 @@ export function leaveAuction(): void {
   socket.emit("leaveAuction"); // emit leaveAuction event kommer ligga i eventlistinern i auctionSockets.ts
 }
 
+export function placeBid(auctionId: string, amount: number): void {
+    if (isNaN(amount) || amount <= 0) {
+        alert("Ange ett giltigt belopp");
+        return;
+    }
+    console.log(`Lägger bud: ${amount} kr på auktion: ${auctionId}`);
+    socket.emit("placeBid", { auctionId, amount }); // EMIT PLACE BID
+}
+
+
+
 export function displayAuctionModal(auction: Auction): void {
   // Hide auction list
   const auctionList = document.querySelector(".auction-list") as HTMLElement;
@@ -57,11 +68,85 @@ export function displayAuctionModal(auction: Auction): void {
     }
   });
 
+    const auctionModal = document.getElementById("auctionModal") as HTMLElement;
+    const modalTitle = document.getElementById(
+        "modalTitle"
+    ) as HTMLHeadingElement;
+    const modalDescription = document.getElementById(
+        "modalDescription"
+    ) as HTMLParagraphElement;
+    const modalCurrentBid = document.getElementById(
+        "modalCurrentBid"
+    ) as HTMLParagraphElement;
+    const modalEndTime = document.getElementById(
+        "modalEndTime"
+    ) as HTMLParagraphElement;
+
+    modalTitle.innerHTML = auction.title;
+    modalDescription.innerHTML = auction.description;
+    modalCurrentBid.innerHTML = `Nuvarande bud: ${auction.startPrice} kr`;
+    modalEndTime.innerHTML = `Slutar: ${new Date(
+        auction.endDate
+    ).toLocaleString()}`;
+
+    const modalContent = document.getElementById("modalContent") as HTMLElement;
+    if (!modalContent) return;
+
+    // viktig - ta bort befintlig budcontainer om den finns
+    // så att vi inte får dubbla bud
+    const existingContainer = document.getElementById("bidContainer");
+    if (existingContainer) {
+        existingContainer.remove();
+    }
+
+    let bidContainer = document.createElement("div");
+    bidContainer.id = "bidContainer";
+    bidContainer.classList.add("bid-container");
+    modalContent.appendChild(bidContainer);
+
+    bidContainer.innerHTML = ""; // Clear previous bids
+
+    auction.bids.forEach((bid) => {
+        const createdByP = document.createElement("p");
+        const amountP = document.createElement("p");
+
+        createdByP.innerHTML = bid.placedBy?.name || "Okänd användare";
+        amountP.innerHTML = `${bid.amount} kr`;
+
+        const myDiv = document.createElement("div");
+        myDiv.appendChild(createdByP);
+        myDiv.appendChild(amountP);
+
+        const modalContent = document.getElementById("modalContent");
+        if (modalContent) {
+            bidContainer.appendChild(myDiv);
+        }
+    });
+    // eventlistener to bid button
+    const bidButton = document.getElementById("placeBidButton") as HTMLButtonElement;
+    const bidInput = document.getElementById("bidAmount") as HTMLInputElement;
+
+    if (bidButton) {
+        bidButton.onclick = () => {
+            const amount = parseInt(bidInput.value);
+            placeBid(auction._id, amount);
+            bidInput.value = ""; // Clear input after bid
+            console.log("Bid button clicked, auction ID:", auction._id, "amount:", amount);
+        };
+    }
+
+    // Show the modal
+    if (auctionModal) {
+        auctionModal.style.display = "block";
+    }
+    addBackButton(auctionModal, auctionList); // Added backbutton!!!
+
   // Show the modal
   if (auctionModal) {
     auctionModal.style.display = "block";
   }
   addBackButton(auctionModal, auctionList); // Added backbutton!!!
+
 }
 export function addBackButton(
   modal: HTMLElement,

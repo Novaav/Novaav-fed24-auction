@@ -22,22 +22,11 @@ socket.on("userConnected", (user) => {
   console.log("Connected to server with ID:", user);
 });
 
-document.getElementById("placeBidButton")?.addEventListener("click", () => {
-  const cookies = cookie.parse(document.cookie || "");
-  const loginCookie = cookies.login;
-  if (loginCookie) {
-    const decoded = jwt.decode(loginCookie);
-    if (!decoded || typeof decoded === "string") {
-      console.error("Invalid token or decoding failed");
-      return;
-    }
 
-    const decodedUser = decoded as UserInfo;
-    const bidBy = decodedUser.name;
-    const bidEmail = decodedUser.email;
-    const inputBid = document.getElementById("bidAmount") as HTMLInputElement;
-    const newBidAmount = inputBid.value;
-
-    socket.emit("placedBid", newBidAmount, bidBy, bidEmail, selectedAuction);
-  }
+socket.on("bidUpdate", (updatedAuction: Auction) => {
+  console.log("Bid update received:", updatedAuction);
+  displayAuctionModal(updatedAuction); // Update auction details in modal(socket)
 });
+
+socket.on("error", (errorMessage: string) => {
+  alert(errorMessage);
