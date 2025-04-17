@@ -4,6 +4,7 @@ import Auction from "../models/auctionSchema.mts";
 import jwt from "jsonwebtoken";
 import { UserDto } from "../models/userDto.mts";
 import { Document } from "mongoose";
+import { AuctionData, Bid, BidData } from "./socketInterfaces.mjs";
 
 export const auctionSocket = async (socket: Socket, io) => {
   console.log("a user connected", socket.id);
@@ -76,28 +77,7 @@ export const auctionSocket = async (socket: Socket, io) => {
     }
   });
   // PLACE BID
-  interface BidData {
-    auctionId: string;
-    amount: number;
-  }
-  interface Bid {
-    amount: number;
-    placedBy: {
-      name: string;
-      email: string;
-    };
-  }
-  interface AuctionData {
-    title: string;
-    description: string;
-    startPrice: number;
-    endDate: Date;
-    createdBy: {
-      name: string;
-      email: string;
-    };
-    bids: Bid[];
-  }
+
 
   socket.on("placeBid", async (data: BidData) => {
     try {
@@ -128,7 +108,11 @@ export const auctionSocket = async (socket: Socket, io) => {
         socket.emit("error", "Du kan inte bjuda på din egen auktion"); // EMIT ERROR
         return;
       }
+
       // check if auction is ended
+      if (auction.status === "ended") {
+        socket.emit("error", "Auktionen är redan avslutad"); // EMIT ERROR
+      }
       const currentDate = new Date();
       if (currentDate > auction.endDate) {
         socket.emit("error", "Auktionen är avslutad"); // EMIT ERROR
