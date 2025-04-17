@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import { UserDto } from "../models/userDto.mts";
 import { Document } from "mongoose";
 
-
 export const auctionSocket = async (socket: Socket, io) => {
   console.log("a user connected", socket.id);
 
@@ -16,7 +15,7 @@ export const auctionSocket = async (socket: Socket, io) => {
       const decodedUser = jwt.decode(loginCookie) as UserDto;
       if (decodedUser) {
         console.log("User decoded from cookie:", decodedUser);
-        socket.emit("userConnected", decodedUser); // emit User connect
+        socket.emit("userConnected", decodedUser);
       }
     }
   } catch (error) {
@@ -30,7 +29,6 @@ export const auctionSocket = async (socket: Socket, io) => {
   socket.on("joinAuction", async (auctionId: string) => {
     console.log("User joined auction:", auctionId);
 
-    // Leave all other rooms except the socket's own room
     for (const room of socket.rooms) {
       if (room !== socket.id) {
         console.log("Leaving room:", room);
@@ -38,10 +36,9 @@ export const auctionSocket = async (socket: Socket, io) => {
       }
     }
 
-    socket.join(auctionId); // Join room by ID
+    socket.join(auctionId);
 
     try {
-      // Define the interface for the auction document
       interface AuctionDocument extends Document {
         _id: string;
         title: string;
@@ -120,12 +117,13 @@ export const auctionSocket = async (socket: Socket, io) => {
         return;
       }
 
-      const auction = await Auction.findById(auctionId) as Document & AuctionData;
+      const auction = (await Auction.findById(auctionId)) as Document &
+        AuctionData;
       if (!auction) {
         socket.emit("error", "Auktionen hittades inte");
         return;
       }
-      // check user is not the creator of the auction
+
       if (decodedUser.email === auction.createdBy.email) {
         socket.emit("error", "Du kan inte bjuda på din egen auktion"); // EMIT ERROR
         return;
@@ -133,18 +131,22 @@ export const auctionSocket = async (socket: Socket, io) => {
 
       // Valid bid amount och find highest bid
       if (auction.bids.length > 0) {
-
-        const highestBid = auction.bids.reduce( // Hitta högsta budet
-          (max, bid) => bid.amount > max.amount ? bid : max,
+        const highestBid = auction.bids.reduce(
+          // Hitta högsta budet
+          (max, bid) => (bid.amount > max.amount ? bid : max),
           auction.bids[0]
         );
 
         // om budet är lägre än högsta budet
         if (amount <= highestBid.amount) {
-          socket.emit("error", "Budet måste vara högre än nuvarande högsta bud"); // EMIT ERROR
+          socket.emit(
+            "error",
+            "Budet måste vara högre än nuvarande högsta bud"
+          ); // EMIT ERROR
           return;
         }
-      } else if (amount < auction.startPrice) { // detta är första budet
+      } else if (amount < auction.startPrice) {
+        // detta är första budet
         socket.emit("error", "Budet måste vara minst startpriset");
         return;
       }
@@ -154,26 +156,25 @@ export const auctionSocket = async (socket: Socket, io) => {
         amount,
         placedBy: {
           name: decodedUser.username,
-          email: decodedUser.email
-        }
+          email: decodedUser.email,
+        },
       };
 
       // Add bid to auction and save
       auction.bids.push(newBid);
       await auction.save();
 
-      console.log(`New bid of ${amount} kr placed by ${decodedUser.username} on auction ${auction.title}`);
+      console.log(
+        `New bid of ${amount} kr placed by ${decodedUser.username} on auction ${auction.title}`
+      );
 
       // Broadcast to all clients in this auction room
       io.to(auctionId).emit("bidUpdate", auction); // EMIT BID UPDATE to ROOM(auctionId)
-
     } catch (error) {
       console.error("Error processing bid:", error);
       socket.emit("error", "Det gick inte att lägga budet");
     }
   });
-
-
 
   socket.on(
     "placedBid",
@@ -208,7 +209,6 @@ export const auctionSocket = async (socket: Socket, io) => {
       })) as AuctionDocument;
 
       if (selectedAuction) {
-        // Create the new bid object
         const newBid: Bid = {
           amount: newBidAmount,
           placedBy: {
@@ -217,16 +217,13 @@ export const auctionSocket = async (socket: Socket, io) => {
           },
         };
 
-        // Initialize bids array if it doesn't exist
         if (!Array.isArray(selectedAuction.bids)) {
           selectedAuction.bids = [];
         }
 
-        // Add the new bid to the auction
         selectedAuction.bids.push(newBid);
         await selectedAuction.save();
 
-        // Notify all users in the auction room
         io.to(auctionId).emit("newBid", newBid);
       } else {
         console.error("Auction not found:", auctionId);

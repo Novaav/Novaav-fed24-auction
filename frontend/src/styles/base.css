@@ -1,11 +1,9 @@
-/* Reset och gemensamma stilar */
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background-color: #fff;
   color: #222;
   height: 100%;
-  
 }
 
 a {
@@ -13,13 +11,14 @@ a {
   color: inherit;
 }
 
-/* Formulärstilar */
-input, button {
+input,
+button {
   font-size: 1rem;
   color: #444;
 }
 
-input:focus, button:focus {
+input:focus,
+button:focus {
   outline: none;
 }
 

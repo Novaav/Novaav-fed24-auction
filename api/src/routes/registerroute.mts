@@ -1,5 +1,4 @@
 import express from "express";
-import { StringSchemaDefinition } from "mongoose";
 import { createUser } from "../controllers/registercontroller.mjs";
 
 export const registerRouter = express.Router();

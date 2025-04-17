@@ -23,7 +23,6 @@ auctionRouter.post("/", async (req, res) => {
     normalizedEndDate.setHours(23, 59, 59, 999);
 
     const user = res.locals.user;
-    // Hämta användarinformation från res.locals.user
 
     const newAuction = new Auction({
       title,

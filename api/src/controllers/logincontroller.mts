@@ -9,8 +9,6 @@ export const login = async (name: string, password: string) => {
     throw Error("Did not find user with email " + name);
   }
 
-  // password -> foundUser.password
-
   const success = await bcrypt.compare(password, foundUser.password);
   if (success) {
     return convertDbUserToDto(foundUser);

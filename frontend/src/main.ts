@@ -1,7 +1,6 @@
 import "./styles/main.css";
 import "./styles/base.css";
 
-// Ladda navbar dynamiskt
 fetch("/navbar.html")
   .then((res) => res.text())
   .then((html) => {

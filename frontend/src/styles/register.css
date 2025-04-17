@@ -1,15 +1,14 @@
-/* ska organisera och minska duplicering sen */
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background-color: #fff;
   color: #222;
   height: 100%;
   overflow: hidden;
-  background-image: url('/public/museum3.jpeg'); 
-  background-size: cover; 
-  background-position: center; 
-  background-attachment: fixed; 
+  background-image: url("/public/museum3.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 a {
@@ -17,7 +16,6 @@ a {
   color: inherit;
 }
 
-/* Container for form */
 .container {
   display: flex;
   justify-content: center;
@@ -27,7 +25,7 @@ a {
 }
 
 .form-card {
-  background-color: rgba(255, 255, 255, 0.9); 
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 40px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -64,7 +62,7 @@ input {
 }
 
 input:focus {
-  border-color: #f88f9c; 
+  border-color: #f88f9c;
   outline: none;
 }
 
