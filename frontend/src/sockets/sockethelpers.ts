@@ -51,22 +51,6 @@ export function displayAuctionModal(auction: Auction): void {
     auction.endDate
   ).toLocaleString()}`;
 
-  auction.bids.forEach((bid) => {
-    const createdByP = document.createElement("p");
-    const amountP = document.createElement("p");
-
-    createdByP.innerHTML = bid.placedBy?.name || "Okänd användare";
-    amountP.innerHTML = `${bid.amount} kr`;
-
-    const myDiv = document.createElement("div");
-    myDiv.appendChild(createdByP);
-    myDiv.appendChild(amountP);
-
-    const modalContent = document.getElementById("modalContent");
-    if (modalContent) {
-      modalContent.appendChild(myDiv);
-    }
-  });
 
   const modalContent = document.getElementById("modalContent") as HTMLElement;
   if (!modalContent) return;
