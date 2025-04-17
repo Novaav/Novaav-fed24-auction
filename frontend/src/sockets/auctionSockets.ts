@@ -30,3 +30,4 @@ socket.on("bidUpdate", (updatedAuction: Auction) => {
 
 socket.on("error", (errorMessage: string) => {
   alert(errorMessage);
+});

@@ -4,7 +4,7 @@ import Auction from "../models/auctionSchema.mts";
 import jwt from "jsonwebtoken";
 import { UserDto } from "../models/userDto.mts";
 import { Document } from "mongoose";
-import { InferSchemaType, Document } from "mongoose";
+
 
 export const auctionSocket = async (socket: Socket, io) => {
   console.log("a user connected", socket.id);
