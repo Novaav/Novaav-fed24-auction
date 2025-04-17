@@ -42,16 +42,50 @@ export function displayAuctionModal(auction: Auction): void {
     "modalEndTime"
   ) as HTMLParagraphElement;
 
+  const isAuctionClosed = auction.status === "closed" || new Date() > new Date(auction.endDate); // kollar status open eller closed
+
+
   modalTitle.innerHTML = auction.title;
   modalDescription.innerHTML = auction.description;
 
   let highestBid = auction.startPrice;
+  let highestBidder = null;
 
   if (auction.bids && auction.bids.length > 0) {
     highestBid = Math.max(...auction.bids.map((bid) => bid.amount));
+    highestBidder = auction.bids.map((bid) => bid.placedBy.name);
   }
 
-  modalCurrentBid.innerHTML = `Nuvarande bud: ${highestBid} kr`;
+  // Check if the auction is closed or if the end date has passed
+  if (isAuctionClosed) {
+    modalCurrentBid.innerHTML = `Auktionen är avslutad. Ett med bud på ${highestBid} kr`;
+  } else {
+    modalCurrentBid.innerHTML = `Nuvarande bud: ${highestBid} kr`;
+  }
+  //modalCurrentBid.innerHTML = `Nuvarande bud: ${highestBid} kr`;
+
+  // Winner information
+  const existingWinnerInfo = document.getElementById("winnerInfo");
+  if (existingWinnerInfo) {
+    existingWinnerInfo.remove();
+  }
+  if (isAuctionClosed) {
+    const winnerInfo = document.createElement("p");
+    winnerInfo.id = "winnerInfo";
+    winnerInfo.classList.add("winner-info");
+
+    if (auction.winner) {
+      winnerInfo.innerHTML = `Vinnare: <span class="winner-name">${auction.winner.name}</span>`;
+    } else if (highestBidder) {
+      winnerInfo.innerHTML = `Vinnare: <span class="winner-name">${highestBidder}</span>`;
+    } else {
+      winnerInfo.innerHTML = "Inga bud placerades på denna auktion";
+    }
+
+    // Insert after modalCurrentBid
+    modalCurrentBid.after(winnerInfo);
+  }
+
   modalEndTime.innerHTML = `Slutar: ${new Date(
     auction.endDate
   ).toLocaleString()}`;
@@ -146,3 +180,4 @@ export function addBackButton(
   // Append the button to modal
   modalContent.appendChild(backButton);
 }
+

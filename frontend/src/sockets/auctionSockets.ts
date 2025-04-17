@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 import "../styles/main.css";
 import { Auction } from "../models/Imodels";
-import { displayAuctionModal } from "./sockethelpers";
+import { displayAuctionModal, selectedAuction } from "./sockethelpers";
 
 export const socket = io("http://localhost:3000", {
   withCredentials: true,
@@ -27,4 +27,11 @@ socket.on("bidUpdate", (updatedAuction: Auction) => {
 
 socket.on("error", (errorMessage: string) => {
   alert(errorMessage);
+});
+
+socket.on("auctionClosed", (auction: Auction) => {
+  console.log("Auction ended:", auction);
+  if (auction._id === selectedAuction) {
+    displayAuctionModal(auction);
+  }
 });

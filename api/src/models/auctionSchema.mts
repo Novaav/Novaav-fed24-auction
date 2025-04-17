@@ -17,6 +17,8 @@ const AuctionSchema: Schema = new Schema({
   endDate: { type: Date, required: true },
   createdBy: { type: UserSubSchema, required: true },
   bids: { type: [BidSchema], default: [] },
+  winner: { type: UserSubSchema, required: false, default: null },
+  status: { type: String, enum: ["open", "closed"], default: "open" },
 });
 
 const Auction = model("Auction", AuctionSchema);

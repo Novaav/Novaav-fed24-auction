@@ -6,10 +6,11 @@ import { auctionSocket } from "./sockets/auctionSocket.mjs";
 import cookieParser from "cookie-parser";
 import { loginRouter } from "./routes/loginroute.mts";
 import { auth } from "./middlewares/auth.mts";
-import mongoose from "mongoose";
+import mongoose, { set } from "mongoose";
 import dotenv from "dotenv";
 import { registerRouter } from "./routes/registerroute.mjs";
 import auctionRouter from "./routes/auctionroute.mts";
+import { checkAuctionStatus } from "./auctionChecker/auctionSchedule.mts";
 
 dotenv.config();
 
@@ -56,6 +57,9 @@ server.listen(port, async () => {
     }
     await mongoose.connect(`${DB}`);
     console.log("Api is up and running, connected to the database");
+    setInterval(checkAuctionStatus, 60000); // Varje minut
+
+    checkAuctionStatus(); // körs på startup
   } catch (error) {
     console.error("Error connecting to the database", error);
   }

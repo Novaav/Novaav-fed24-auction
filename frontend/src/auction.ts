@@ -29,8 +29,7 @@ async function fetchAuctions() {
         <p>Startpris: ${auction.startPrice} kr</p>
         <p>Skapad av: ${auction.createdBy.name}</p>
         <p>Slutar: ${new Date(auction.endDate).toLocaleString()}</p>
-        <button class="Join-room-btn" data-title='${
-          auction._id
+        <button class="Join-room-btn" data-title='${auction._id
         }'>Gå med</button>
       `;
 
@@ -74,7 +73,7 @@ document
     ).value;
 
     const endDate = new Date(endDateInput);
-    endDate.setHours(23, 59, 59, 999);
+    //endDate.setHours(23, 59, 59, 999);
     try {
       const response = await axios.post(
         "http://localhost:3000/auctions",
