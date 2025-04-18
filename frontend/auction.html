@@ -6,15 +6,17 @@
     <title>Auction</title>
     <link rel="stylesheet" href="./src/styles/auction.css" />
     <link rel="stylesheet" href="./src/styles/main.css" />
-
   </head>
   <body>
-
     <div id="navbar-container"></div>
 
     <div id="app">
       <h1>Auktioner</h1>
-      <div class="auction-container">
+      <button id="createAuctionButton" class="auction-create-button">
+        Skapa Auktion
+      </button>
+
+      <div class="auction-create-modal" id="auctionCreateModal">
         <div class="auction-create">
           <h2>Skapa Auktion</h2>
           <form id="createAuctionForm">
@@ -34,31 +36,34 @@
             <button type="submit">Skapa</button>
           </form>
         </div>
-        
-        <div class="auction-right">
-          <div class="auction-list">
-            <h2>Pågående Auktioner</h2>
-            <div id="auctionList"></div>
-          </div>
-          <div id="auctionModal" class="modal">
-            <div id="modalContent" class="modal-content">
-              <h2 id="modalTitle">Auktionstitel</h2>
-              <p id="modalDescription">Beskrivning</p>
-              <p id="modalCurrentBid">Nuvarande bud: 0kr</p>
-              <p id="modalEndTime">Slutar: </p>
-              
-              <input
-                type="number"
-                id="bidAmount"
-                placeholder="Lägg ditt bud"
-                required
-              />
-              <button id="placeBidButton">Lägg bud</button>
-            </div>
+      </div>
+
+      <div class="auction-section">
+        <h2>Pågående Auktioner</h2>
+        <div class="auction-container">
+          <div class="auction-list" id="auctionList">
           </div>
         </div>
       </div>
+
+      <div id="auctionModal" class="modal">
+        <div id="modalContent" class="modal-content">
+          <h2 id="modalTitle">Auktionstitel</h2>
+          <p id="modalDescription">Beskrivning</p>
+          <p id="modalCurrentBid">Nuvarande bud: 0kr</p>
+          <p id="modalEndTime">Slutar: </p>
+
+          <input
+            type="number"
+            id="bidAmount"
+            placeholder="Lägg ditt bud"
+            required
+          />
+          <button id="placeBidButton">Lägg bud</button>
+        </div>
+      </div>
     </div>
+
     <script type="module" src="/src/auction.ts"></script>
     <script type="module" src="src/main.ts"></script>
   </body>

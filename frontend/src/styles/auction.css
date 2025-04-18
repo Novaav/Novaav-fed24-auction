@@ -1,114 +1,240 @@
-
-
 .auction-container {
-    display: flex;
-    gap: 10px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+ }
+ 
+ 
+ .auction-section h2 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+ }
+ 
+ 
+ .auction-section h2::after {
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: blue;
+  margin: 10px auto 0;
+  border-radius: 2px;
+ }
+ 
+ 
+ .auction-create-button {
+  display: inline-block;
+  margin: 20px auto;
+  background: green;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+ }
+ 
+ 
+ .auction-create-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+ }
+ 
+ 
+ .auction-create-modal.active {
+  display: flex;
+ }
+ 
+ 
+ .auction-create {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+ }
+ 
+ 
+ .auction-create h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+ }
+ 
+ 
+ .auction-create form input,
+ .auction-create form textarea,
+ .auction-create form button {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+ }
+ 
+ 
+ 
+ .auction-create form button {
+  background: blue;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+ }
+ 
+ 
+ .auction-create form button:hover {
+  background: lightblue;
+ 
+ }
+ .auction-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+  gap: 20px;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+ }
+ 
+ 
+ #auctionList .auction {
+  background: white;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+ 
+ 
+ 
+ 
+ 
+ #auctionList .auction h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: #333;
+ }
+ 
+ 
+ #auctionList .auction p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+ }
+ 
+ 
+ #auctionList .auction button {
+  background: green;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+ }
+ 
+ .auction-section {
+  margin-top: 40px;
+  padding: 20px;
+  background: #f4f4f4;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.modal-content p {
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: #666;
+}
+
+.modal-content input {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.modal-content button {
+  background: green;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background: green;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+ 
+ 
+ @keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
   }
-  
-  .auction-create {
-    flex: 1;
-    background: #ffffff;
-    padding: 10px;
-    border-radius: 8px;
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .auction-create h2 {
-    margin-bottom: 15px;
-  }
-  
-  .auction-create form input,
-  .auction-create form textarea,
-  .auction-create form button {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .auction-create form button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .auction-create form button:hover {
-    background-color: blue;
-  }
-  
-  .auction-list {
-    flex: 2;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-  }
-  
-  .auction-list h2 {
-    margin-bottom: 15px;
-  }
-  
-  #auctionList .auction {
-    background: white;
-    padding: 15px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #1a1a1a;
-  }
-  
-  #auctionList .auction h3 {
-    margin: 0 0 10px;
-  }
-  
-  #auctionList .auction button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  #auctionList .auction button:hover {
-    background-color: #218838;
-  }
-  
-  .modal {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modal-content {
-    background: #ffffff;
-    color: #1a1a1a;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    text-align: center;
-  }
-  
-  .modal-content .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  
-  .modal-content button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .modal-content button:hover {
-    background-color: #0056b3;
-  }
+ }
+ 
+ 
+ 

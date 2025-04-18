@@ -4,6 +4,8 @@ import Auction from "../models/auctionSchema.mts";
 import jwt from "jsonwebtoken";
 import { UserDto } from "../models/userDto.mts";
 import { Document } from "mongoose";
+import { AuctionData, Bid, BidData } from "./socketInterfaces.mjs";
+import { checkAuctionWinner } from "../auctionChecker/auctionWinner.mts";
 
 export const auctionSocket = async (socket: Socket, io) => {
   console.log("a user connected", socket.id);
@@ -76,29 +78,6 @@ export const auctionSocket = async (socket: Socket, io) => {
     }
   });
   // PLACE BID
-  interface BidData {
-    auctionId: string;
-    amount: number;
-  }
-  interface Bid {
-    amount: number;
-    placedBy: {
-      name: string;
-      email: string;
-    };
-  }
-  interface AuctionData {
-    title: string;
-    description: string;
-    startPrice: number;
-    endDate: Date;
-    createdBy: {
-      name: string;
-      email: string;
-    };
-    bids: Bid[];
-  }
-
   socket.on("placeBid", async (data: BidData) => {
     try {
       const { auctionId, amount } = data;
@@ -123,11 +102,25 @@ export const auctionSocket = async (socket: Socket, io) => {
         socket.emit("error", "Auktionen hittades inte");
         return;
       }
-
+      // Check IF user is the creator
       if (decodedUser.email === auction.createdBy.email) {
         socket.emit("error", "Du kan inte bjuda på din egen auktion"); // EMIT ERROR
         return;
       }
+
+      // check if auction is ended
+      if (auction.status === "closed") {
+        socket.emit("error", "Auktionen är redan avslutad"); // EMIT ERROR
+        return;
+      }
+
+      const currentDate = new Date();
+      if (currentDate > auction.endDate) {
+        await checkAuctionWinner(auction, io); // EMIT "auctionClosed"
+        socket.emit("error", "Auktionen är avslutad"); // EMIT ERROR
+        return;
+      }
+
 
       // Valid bid amount och find highest bid
       if (auction.bids.length > 0) {
@@ -176,61 +169,61 @@ export const auctionSocket = async (socket: Socket, io) => {
     }
   });
 
-  socket.on(
-    "placedBid",
-    async (
-      newBidAmount: string,
-      bidBy: string,
-      bidEmail: string,
-      auctionId: string
-    ) => {
-      console.log(auctionId);
+  // socket.on(
+  //   "placedBid",
+  //   async (
+  //     newBidAmount: string,
+  //     bidBy: string,
+  //     bidEmail: string,
+  //     auctionId: string
+  //   ) => {
+  //     console.log(auctionId);
 
-      // Define interfaces for proper typing
-      interface BidPlacedBy {
-        name: string;
-        email: string;
-      }
+  //     // Define interfaces for proper typing
+  //     interface BidPlacedBy {
+  //       name: string;
+  //       email: string;
+  //     }
 
-      interface Bid {
-        amount: string;
-        placedBy: BidPlacedBy;
-      }
+  //     interface Bid {
+  //       amount: string;
+  //       placedBy: BidPlacedBy;
+  //     }
 
-      interface AuctionDocument extends Document {
-        _id: string;
-        title: string;
-        bids: Bid[];
-        [key: string]: any;
-      }
+  //     interface AuctionDocument extends Document {
+  //       _id: string;
+  //       title: string;
+  //       bids: Bid[];
+  //       [key: string]: any;
+  //     }
 
-      const selectedAuction = (await Auction.findOne({
-        _id: auctionId,
-      })) as AuctionDocument;
+  //     const selectedAuction = (await Auction.findOne({
+  //       _id: auctionId,
+  //     })) as AuctionDocument;
 
-      if (selectedAuction) {
-        const newBid: Bid = {
-          amount: newBidAmount,
-          placedBy: {
-            name: bidBy,
-            email: bidEmail,
-          },
-        };
+  //     if (selectedAuction) {
+  //       const newBid: Bid = {
+  //         amount: newBidAmount,
+  //         placedBy: {
+  //           name: bidBy,
+  //           email: bidEmail,
+  //         },
+  //       };
 
-        if (!Array.isArray(selectedAuction.bids)) {
-          selectedAuction.bids = [];
-        }
+  //       if (!Array.isArray(selectedAuction.bids)) {
+  //         selectedAuction.bids = [];
+  //       }
 
-        selectedAuction.bids.push(newBid);
-        await selectedAuction.save();
+  //       selectedAuction.bids.push(newBid);
+  //       await selectedAuction.save();
 
-        io.to(auctionId).emit("newBid", newBid);
-      } else {
-        console.error("Auction not found:", auctionId);
-        socket.emit("error", "Auction not found.");
-      }
-    }
-  );
+  //       io.to(auctionId).emit("newBid", newBid);
+  //     } else {
+  //       console.error("Auction not found:", auctionId);
+  //       socket.emit("error", "Auction not found.");
+  //     }
+  //   }
+  // );
 
   socket.on("disconnect", () => {
     console.log("a user disconnected", socket.id);

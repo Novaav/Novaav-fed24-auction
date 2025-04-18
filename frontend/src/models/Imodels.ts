@@ -16,4 +16,6 @@ export interface Auction {
     endDate: string;
     createdBy: UserInfo;
     bids: Bid[];
+    winner: UserInfo | null;
+    status: "open" | "closed";
 }
