@@ -4,7 +4,24 @@ import { Auction } from "../src/models/Imodels.ts";
 import { joinAuction } from "../src/sockets/sockethelpers.ts";
 import "../src/sockets/auctionSockets.ts";
 
+
+
 const auctionList = document.getElementById("auctionList");
+const createAuctionButton = document.getElementById("createAuctionButton");
+const auctionCreateModal = document.getElementById("auctionCreateModal");
+
+
+createAuctionButton?.addEventListener("click", () => {
+ auctionCreateModal?.classList.add("active");
+});
+
+
+auctionCreateModal?.addEventListener("click", (e) => {
+ if (e.target === auctionCreateModal) {
+   auctionCreateModal.classList.remove("active");
+ }
+});
+
 
 async function fetchAuctions() {
   try {
@@ -35,7 +52,7 @@ async function fetchAuctions() {
 
       auctionList?.appendChild(auctionDiv);
     });
-    // Event listener for the auction list buttons
+
     document.querySelectorAll(".Join-room-btn").forEach((button) => {
       button.addEventListener("click", function (e) {
         e.preventDefault();
@@ -45,7 +62,7 @@ async function fetchAuctions() {
 
         if (auctionId) {
           console.log("User clicked auction:", auctionId);
-          joinAuction(auctionId); // JOIN ACTION
+          joinAuction(auctionId); 
         }
       });
     });
@@ -73,7 +90,6 @@ document
     ).value;
 
     const endDate = new Date(endDateInput);
-    //endDate.setHours(23, 59, 59, 999);
     try {
       const response = await axios.post(
         "http://localhost:3000/auctions",
