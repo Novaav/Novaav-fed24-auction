@@ -44,19 +44,20 @@ Klienten behöver även ha funktioner för att registrera användare och logga i
 - C:\Work\AssignmentCorrector\backend\repos\fed24s-the-auction-grupp-4-api\frontend\src\sockets\sockethelpers.ts - no-console - Unexpected console statement.,no-console - Unexpected console statement.,no-console - Unexpected console statement.
 
 ## 🏆 **Betyg: G**
-📌 **Motivering:** Koden uppfyller alla krav för betyg G. Den har ett API byggt med Node.js och Express, använder Websockets, har en bra kodstruktur för Websockets, hanterar rum, tillåter att skapa auktioner och lägga bud (med undantag för egna auktioner), och hanterar användarinloggning och registrering med cookies.
+📌 **Motivering:** Koden uppfyller alla grundläggande krav: ett API med node.js och express, implementering av websockets, hantering av rum för websockets, och funktionalitet för skapande av auktioner och budgivning samt inloggning och registrering av användare. Koden har en bra struktur och visar förståelse för realtidskommunikation.
 
 💡 **Förbättringsförslag:**  
-Inga större förbättringar behövs. För framtida förbättringar kan koden dra nytta av ytterligare felhantering eller mer sofistikerad logik för sessionshantering och autentiseringsmetoder, såsom att kryptera JWT före lagring i cookies för säkerhet. Det kan också vara bra att inkludera några enhetstester för robusthet.
+Koden skulle kunna förbättras genom att lägga till mer omfattande felhantering och loggning i hela applikationen. Detta skulle hjälpa vid felsökning och användarsupport. Dessutom kan säkerheten förbättras, t.ex. genom användning av miljövariabler för hemligheter (som JWT-hemligheten) och genom att striktare hantera socket-anslutningar och autentisering. Dokumentation av kod och enhetstester skulle också förbättra kodens kvalitet och underlätta framtida underhåll.
 
 ## 👥 Gruppbidrag
 
 | Deltagare | Antal commits | Commit % | Uppgiftskomplettering | Totalt bidrag |
 | --------- | -------------- | -------- | ---------------------- | ------------- |
-| CJVIK | 32 | 36.4% | 0.25 | 0.3 |
-| Elias Murray | 31 | 35.2% | 0.25 | 0.29 |
-| Amir1235 | 23 | 26.1% | 0.25 | 0.25 |
-| Nova | 2 | 2.3% | 0.25 | 0.16 |
+| CJVIK | 32 | 36% | 0.2 | 0.26 |
+| Elias Murray | 31 | 34.8% | 0.2 | 0.26 |
+| Amir1235 | 23 | 25.8% | 0.2 | 0.22 |
+| Nova | 2 | 2.2% | 0.2 | 0.13 |
+| assignment-corrector[bot] | 1 | 1.1% | 0.2 | 0.12 |
 
 
 ### 📊 Förklaring
