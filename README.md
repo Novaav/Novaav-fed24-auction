@@ -1,34 +1,35 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/keCtEfOe)
-# Gruppuppgift - Chatapplikation
+# Real-Time Auction Application
 
-Ni skall skapa en auktion-applikation med hjälp av websockets. En användare skall kunna registrera sig på sidan och sedan kunna skapa en (eller flera) auktion(er). En auktion är en sida som använder sig av websockets för att skicka bud och hålla reda på när auktionen går ut. 
+A real-time auction web application where users can **register, log in, create auctions, and place bids**, with live updates powered by WebSockets. Built as a group project for **FED24** at Medieinstitutet, with focus on **front-end design, layout, and real-time integration testing**.
 
-En användare måste vara inloggad för att kunna använda någon del av systemet.
+![Landing Page](images/LandingPage.png)
 
-## Api:t
 
-Ni skall bygga ett api med hjälp av node.js och express. Denna gång skall ni implementera websocket för att skapa en realtidskommunikation mellan servern och klienten. 
+---
 
-Api:t skall ta emot anrop för att skapa en auktion och kunna ta emot bud samt hålla reda på när auktionen är slut och vem som vann.  
+## 🛠️ Tech Stack
 
-En användare skall kunna logga in. Detta betyder att ni behöver lagra användare i databasen så att ni kan slå upp dessa och logga in vid behov. 
+- **Frontend:** HTML, CSS, TypeScript, Vite, Socket.io-client  
+- **Backend:** Node.js, Express, Socket.io, MongoDB, JWT, bcrypt, cookie-parser  
+- **Other tools:** TypeScript, axios  
 
-Ni behöver även kunna registrera användare. 
+---
 
-## Klienten
+## 🔹 Features
 
-Det finns ett projekt för er frontend i denna mall. Ni behöver göra det minsta möjliga i detta projekt för att få er auktions-site att fungera. 
+- **User Authentication:** Register and log in with secure cookie-based sessions.  
+- **Create Auctions:** Users can create new auctions (tested for real-time functionality).  
+- **Place Bids:** Users can place bids in real-time, with live updates visible to all participants.  
+- **Real-Time Updates:** WebSockets handle live auction updates and countdown timers.  
+- **Frontend Focus:** Responsive layout, landing page, auction pages, and user-friendly forms.  
+- **Backend Contributions:** Implemented user schema and assisted with API integration.
 
-Klienten behöver även ha funktioner för att registrera användare och logga in användare. 
+---
 
-## Betyg G
+## 🎯 My Role
 
-- Ett api med node.js och express
-- Websockets är implementerat
-- Bra kodstruktur för websockets
-- Hantering av rum för websockets
-- En användare kan skapa en auktion
-- En användare kan lägga bud på en auktion (inte sin egen dock)
-- En användare kan se information om pågående auktion genom att gå in på auktions-sidan.
-- Inloggning av användare (cookies)
-- Registering av användare
+- Designed and implemented **front-end layout and styling** for landing, login, and auction pages.  
+- Integrated and **tested WebSocket functionality** for live auction updates.  
+- Collaborated with the backend team on **user schema and authentication flow**.  
+
+---
